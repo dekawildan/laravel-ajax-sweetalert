@@ -22,6 +22,9 @@
         <button type="button" class="btn btn-warning" id="pesan">Tampilkan</button>
     </section>
 </article>
+<footer class="bg-dark text-white text-center p-3">
+    Copyright &copy; 2025. www.bisasoftware.id All Reserved
+</footer>
 
     <script src="jquery.min.js"></script>
     <script src="bootstrap.bundle.min.js"></script>
