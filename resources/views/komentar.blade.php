@@ -19,7 +19,7 @@
 </header>
 <article class="container-fluid">
     <section class="bg-primary w-100">
-
+        <button type="button" class="btn btn-warning" id="pesan">Tampilkan</button>
     </section>
 </article>
 
@@ -27,12 +27,24 @@
     <script src="bootstrap.bundle.min.js"></script>
     <script src="sweetalert2.all.js"></script>
     <script>
+        $(document).ready(function() {
+            $('#pesan').on("click", function() {
+                Swal.fire({
+                    title:'Informasi',
+                    text:'Terima kasih atas kunjungan Anda',
+                    icon:'warning',
+                    timer:2000,
+                    showConfirmButton:false,
+                });
+            });
+        });
         Swal.fire({
             title: 'Berhasil',
             text: 'Website anda berhasil di akses',
             icon: 'success',
             confirmButtonText: 'Tutup'
         });
+        
     </script>
 </body>
 </html>
