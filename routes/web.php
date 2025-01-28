@@ -20,3 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/',[komentarController::class, 'index']);
 Route::get('/komentar',[komentarController::class, 'komentar']);
 Route::post('/komentar',[komentarController::class, 'store']);
+Route::put('/editkomentar/{id}',[komentarController::class, 'update']);
+Route::get('/editkomentar/{id}',[komentarController::class, 'update']);
+Route::delete('/deletekomentar/{id}',[komentarController::class, 'destroy']);
+Route::get('/deletekomentar/{id}',[komentarController::class, 'destroy']);

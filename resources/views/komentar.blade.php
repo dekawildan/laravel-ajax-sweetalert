@@ -44,9 +44,46 @@
                         <td>{{$k->email}}</td>
                         <td>{{$k->komentar}}</td>
                         <td>
-                        <a href="javascript:void(0);" class="btn btn-warning">Edit</a>    
+                        <a href="javascript:void(0);" data-toggle="modal" data-target="#edit{{$k->id_komentar}}" class="btn btn-warning">Edit</a>    
                         <a href="javascript:void(0);" class="btn btn-danger">Hapus</a>
                         </td>
+
+<div class="modal" id="edit{{$k->id_komentar}}" role="dialog" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Komentar {{$k->nama}}</h3>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="updateForm" method="POST" action="{{url('/editkomentar/'.$k->id_komentar)}}">
+                    @csrf
+                    @method('PUT')
+                    <div class="form-group">
+                        <label for="nama2">Nama</label>
+                        <input type="hidden" name="id_komentar" id="idkomentar" value="{{$k->id_komentar}}">
+                        <input type="text" id="nama2" name="nama" value="{{$k->nama}}" class="form-control" placeholder="Masukkan Nama..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email2">Email</label>
+                        <input type="email" id="email2" name="email" value="{{$k->email}}" class="form-control" placeholder="Masukkan Email..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="komentar2">Komentar</label>
+                        <textarea name="komentar" id="komentar2" class="form-control" placeholder="Masukkan pesan..." required>{{$k->komentar}}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" id="kirim2" class="btn btn-primary">Kirim</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
                     </tr>
                     @endforeach
                     <tr>
@@ -65,7 +102,7 @@
     Copyright &copy; 2025. www.bisasoftware.id All Reserved
 </footer>
 
-<div class="modal" id="tambahkomentar" role="dialog">
+<div class="modal" id="tambahkomentar" role="dialog" data-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -114,6 +151,38 @@
                 });
             });
 
+            $('#updateForm').submit(function(e) {
+            e.preventDefault();
+            var formData = $(this).serialize();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                type: 'POST',
+                data: formData,
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                success: function(response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: 'Data berhasil diupdate',
+                        showConfirmButton: true,
+                        allowOutsideClick: false,
+                        confirmButtonText: 'Ok'
+                    }).then((result) => {
+                        if(result.isConfirmed) {
+                            location.reload();
+                        }
+                    });
+                },
+                error: function(error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: 'Terjadi kesalahan saat mengupdate data'
+                    });
+                }
+            });
+        });
             $('#kirim').on("click", function() {
                 var nama = $('#nama').val();
                 var email = $('#email').val();

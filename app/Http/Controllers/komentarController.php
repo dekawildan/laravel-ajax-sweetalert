@@ -65,7 +65,13 @@ class komentarController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        if(empty($request->nama) || empty($request->email) || empty($request->komentar)){
+            return redirect()->back();
+        } else {
+            $komen=komentar::findOrFail($id);
+            $komen->update($request->all());
+            return response()->json(['status' => 'Data berhasil di update']);
+        }
     }
 
     /**
