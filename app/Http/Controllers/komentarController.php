@@ -13,7 +13,7 @@ class komentarController extends Controller
      */
     public function index()
     {
-        $komentar=komentar::all();
+        $komentar=komentar::paginate(5);
         return view('komentar', compact('komentar'));
     }
 

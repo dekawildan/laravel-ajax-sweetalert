@@ -13,7 +13,7 @@
 <header class="float-left w-100 m-0">
     <nav class="navbar navbar-expand-lg navbar-light bg-light w-100">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{url('/')}}">Buku Tamu</a>
+            <a class="navbar-brand" id="link" href="{{url('/')}}">Buku Tamu</a>
         </div>
     </nav>
 </header>
@@ -33,6 +33,7 @@
                         <th>Nama</th>
                         <th>Email</th>
                         <th>Komentar</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody id="datakomentar">
@@ -42,10 +43,22 @@
                         <td>{{$k->nama}}</td>
                         <td>{{$k->email}}</td>
                         <td>{{$k->komentar}}</td>
+                        <td>
+                        <a href="javascript:void(0);" class="btn btn-warning">Edit</a>    
+                        <a href="javascript:void(0);" class="btn btn-danger">Hapus</a>
+                        </td>
                     </tr>
                     @endforeach
+                    <tr>
+                        <td colspan="5">
+                            {{$komentar->links()}}
+                        </td>
+                    </tr>
                 </tbody>
             </table>
+    </section>
+    <section id="konten">
+
     </section>
 </article>
 <footer class="bg-dark text-white text-center p-3 float-left w-100 m-0">
@@ -88,6 +101,9 @@
     <script src="sweetalert2.all.js"></script>
     <script>
         $(document).ready(function() {
+            $("#link").on("click", function() {
+                $('#konten').load('{{url("/komentar")}}');
+            });
             $('#pesan').on("click", function() {
                 Swal.fire({
                     title:'Informasi',
