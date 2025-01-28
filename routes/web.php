@@ -18,3 +18,5 @@ use Illuminate\Support\Facades\Route;
     return view('welcome');
 }); */
 Route::get('/',[komentarController::class, 'index']);
+Route::get('/komentar',[komentarController::class, 'komentar']);
+Route::post('/komentar',[komentarController::class, 'store']);

@@ -35,7 +35,7 @@
                         <th>Komentar</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="datakomentar">
                     @foreach($komentar as $k)
                     <tr>
                         <td>{{$k->id_komentar}}</td>
@@ -60,24 +60,21 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="" method="post">
-                    @csrf
                     <div class="form-group">
                         <label for="nama">Nama</label>
-                        <input type="text" name="nama" class="form-control">
+                        <input type="text" id="nama" name="nama" class="form-control" placeholder="Masukkan Nama..." required>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" name="email" class="form-control">
+                        <input type="email" id="email" name="email" class="form-control" placeholder="Masukkan Email..." required>
                     </div>
                     <div class="form-group">
                         <label for="komentar">Komentar</label>
-                        <textarea name="komentar" class="form-control"></textarea>
+                        <textarea name="komentar" id="komentar" class="form-control" placeholder="Masukkan pesan..." required></textarea>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary">Kirim</button>
+                        <button type="submit" id="kirim" class="btn btn-primary">Kirim</button>
                     </div>
-                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
@@ -95,17 +92,69 @@
                 Swal.fire({
                     title:'Informasi',
                     text:'Terima kasih atas kunjungan Anda',
-                    icon:'warning',
-                    timer:2000,
-                    showConfirmButton:false,
+                    icon:'info',
+                    timer: 2000,
+                    showConfirmButton: false
                 });
             });
-        });
-        Swal.fire({
-            title: 'Berhasil',
-            text: 'Website anda berhasil di akses',
-            icon: 'success',
-            confirmButtonText: 'Tutup'
+
+            $('#kirim').on("click", function() {
+                var nama = $('#nama').val();
+                var email = $('#email').val();
+                var komentar = $('#komentar').val();
+            if(nama == "" || email == "" || komentar == "") {
+                Swal.fire({
+                    title: 'Gagal',
+                    text: 'Data tidak boleh kosong',
+                    icon: 'error',
+                    confirmButtonText: 'Tutup'
+                });
+                return false;
+            } else {
+                $.ajax({
+                    url: "{{url('/komentar')}}",
+                    type: "POST",
+                    data: {
+                        nama: nama,
+                        email: email,
+                        komentar: komentar,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            title: 'Berhasil',
+                            text: 'Komentar berhasil ditambahkan',
+                            icon: 'success',
+                            showConfirmButton: true,
+                            allowOutsideClick: false,
+                            confirmButtonText: 'Ok'
+                        }).then((result) => {
+                            /* if(result.value) {
+                                location.reload();
+                            } */
+                            if (result.isConfirmed) {
+                                $.ajax({
+                                    url: "{{url('/komentar')}}", // Ganti dengan route yang sesuai
+                                    method: 'GET',
+                                    success: function(response) {
+                                        let datakomen = $('#datakomentar');
+                                        $.each(response, function(komentar, komentar) {
+                                            let row = $('<tr></tr>');
+                                            row.append('<td>' + komentar.id_komentar + '</td>');
+                                            row.append('<td>' + komentar.nama + '</td>');
+                                            row.append('<td>' + komentar.email + '</td>');
+                                            row.append('<td>' + komentar.komentar + '</td>');
+                                            datakomen.append(row);
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                        $('#tambahkomentar').modal('hide');
+                    }
+                });
+            }
+            });
         });
         
     </script>
