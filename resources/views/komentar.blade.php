@@ -92,10 +92,16 @@
                 <button type="button" class="close" style="right: 1px; float: right;" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-
+                    <form method="post" action="{{url('/deletekomentar/'.$k->id_komentar)}}" id="hapusform{{$k->id_komentar}}">
+                        @csrf
+                        @method('DELETE')
+                        <input type="hidden" name="id_komentar" value="{{$k->id_komentar}}">
+                        <p>Anda Yakin Menghapus Data ini ?</p>
+                        <button type="submit" class="btn btn-danger">Ya</button>
+                    </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
             </div>
         </div>
     </div>
@@ -197,6 +203,39 @@
                         icon: 'error',
                         title: 'Gagal',
                         text: 'Terjadi kesalahan saat mengupdate data'
+                    });
+                }
+            });
+        });
+
+        $('#hapusform{{$k->id_komentar}}').submit(function(e) {
+            e.preventDefault();
+            var formhapus = $(this).serialize();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                type: 'POST',
+                data: formhapus,
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                success: function(response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: 'Data telah dihapus',
+                        showConfirmButton: true,
+                        allowOutsideClick: false,
+                        confirmButtonText: 'Ok'
+                    }).then((result) => {
+                        if(result.isConfirmed) {
+                            location.reload();
+                        }
+                    });
+                },
+                error: function(error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: 'Terjadi kesalahan saat menghapus data'
                     });
                 }
             });

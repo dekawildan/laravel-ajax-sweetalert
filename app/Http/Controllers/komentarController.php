@@ -82,7 +82,7 @@ class komentarController extends Controller
         if(empty($request->id_komentar)) {
             return redirect()->back();
         } else {
-            $komentar=komentar::where($request->id_komentar)->get();
+            $komentar=komentar::findOrFail($id);
             $komentar->delete();
             return response()->json([
                'status' => 'Success' 
