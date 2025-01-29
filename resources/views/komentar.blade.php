@@ -45,7 +45,7 @@
                         <td>{{$k->komentar}}</td>
                         <td>
                         <a href="javascript:void(0);" data-toggle="modal" data-target="#edit{{$k->id_komentar}}" class="btn btn-warning">Edit</a>    
-                        <a href="javascript:void(0);" class="btn btn-danger">Hapus</a>
+                        <a href="javascript:void(0);" class="btn btn-danger" data-toggle="modal" data-target="#hapus{{$k->id_komentar}}">Hapus</a>
                         </td>
 
 <div class="modal" id="edit{{$k->id_komentar}}" role="dialog" data-backdrop="static">
@@ -56,26 +56,43 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form id="updateForm" method="POST" action="{{url('/editkomentar/'.$k->id_komentar)}}">
+                <form id="updateForm{{$k->id_komentar}}" method="POST" action="{{url('/editkomentar/'.$k->id_komentar)}}">
                     @csrf
                     @method('PUT')
                     <div class="form-group">
-                        <label for="nama2">Nama</label>
+                        <label for="nama{{$k->id_komentar}}">Nama</label>
                         <input type="hidden" name="id_komentar" id="idkomentar" value="{{$k->id_komentar}}">
-                        <input type="text" id="nama2" name="nama" value="{{$k->nama}}" class="form-control" placeholder="Masukkan Nama..." required>
+                        <input type="text" id="nama{{$k->id_komentar}}" name="nama" value="{{$k->nama}}" class="form-control" placeholder="Masukkan Nama..." required>
                     </div>
                     <div class="form-group">
-                        <label for="email2">Email</label>
-                        <input type="email" id="email2" name="email" value="{{$k->email}}" class="form-control" placeholder="Masukkan Email..." required>
+                        <label for="email{{$k->id_komentar}}">Email</label>
+                        <input type="email" id="email{{$k->id_komentar}}" name="email" value="{{$k->email}}" class="form-control" placeholder="Masukkan Email..." required>
                     </div>
                     <div class="form-group">
-                        <label for="komentar2">Komentar</label>
-                        <textarea name="komentar" id="komentar2" class="form-control" placeholder="Masukkan pesan..." required>{{$k->komentar}}</textarea>
+                        <label for="komentar{{$k->id_komentar}}">Komentar</label>
+                        <textarea name="komentar" id="komentar{{$k->id_komentar}}" class="form-control" placeholder="Masukkan pesan..." required>{{$k->komentar}}</textarea>
                     </div>
                     <div class="form-group">
-                        <button type="submit" id="kirim2" class="btn btn-primary">Kirim</button>
+                        <button type="submit" id="kirim{{$k->id_komentar}}" class="btn btn-primary">Kirim</button>
                     </div>
                 </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" role="dialog" id="hapus{{$k->id_komentar}}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Konfirmasi Hapus {{$k->nama}}</h2>
+                <button type="button" class="close" style="right: 1px; float: right;" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
@@ -151,7 +168,8 @@
                 });
             });
 
-            $('#updateForm').submit(function(e) {
+@foreach($komentar as $k)
+            $('#updateForm{{$k->id_komentar}}').submit(function(e) {
             e.preventDefault();
             var formData = $(this).serialize();
 
@@ -183,6 +201,7 @@
                 }
             });
         });
+@endforeach
             $('#kirim').on("click", function() {
                 var nama = $('#nama').val();
                 var email = $('#email').val();
