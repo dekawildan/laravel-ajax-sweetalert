@@ -185,6 +185,7 @@
                 data: formData,
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success: function(response) {
+                    
                     Swal.fire({
                         icon: 'success',
                         title: 'Berhasil',
