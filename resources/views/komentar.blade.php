@@ -282,12 +282,12 @@
                                     method: 'GET',
                                     success: function(response) {
                                         let datakomen = $('#datakomentar');
-                                        $.each(response, function(komentar, komentar) {
+                                        $.each(response, function(komentar, subkomentar) {
                                             let row = $('<tr></tr>');
-                                            row.append('<td>' + komentar.id_komentar + '</td>');
-                                            row.append('<td>' + komentar.nama + '</td>');
-                                            row.append('<td>' + komentar.email + '</td>');
-                                            row.append('<td>' + komentar.komentar + '</td>');
+                                            row.append('<td>' + subkomentar.id_komentar + '</td>');
+                                            row.append('<td>' + subkomentar.nama + '</td>');
+                                            row.append('<td>' + subkomentar.email + '</td>');
+                                            row.append('<td>' + subkomentar.komentar + '</td>');
                                             datakomen.append(row);
                                         });
                                     }
